@@ -1,0 +1,74 @@
+<script type="text/javascript">
+  //ws:// or wss://
+  var ws_scheme = window.location.protocal == "https:" ? "wss" : "ws";
+  var ws_path = ws_scheme + "://" + window.location.host + "/"; // development
+  //var ws_path = ws_scheme + "://" + window.location.host + ":8001/" // production
+  var notificationSocket = new WebSocket(ws_path);
+
+  notificationSocket.onmessage = function (message) {
+    var data = JSON.parse(message.data);
+    console.log("Got Notification websocket message.");
+    console.log("Got Notification websocket message." + data.private_msg_type);
+    //General notifications
+    if (data.general_msg_type == 0) {
+      handleGeneralNotificationsData(
+        data["notifications"],
+        data["new_page_number"]
+      );
+    }
+    if(data.general_msg_type == 1){
+      setGeneralPaginationExhausted()
+    }
+    if(data.general_msg_type == 2){
+      refreshGeneralNotificationsData(data['notifications'])
+    }
+    if (data.general_msg_type == 3){
+      handleNewGeneralNotificationsData(data['notifications'])
+    }
+    if(data.general_msg_type == 4){
+      setUnreadGeneralNotificationsCount(data['count'])
+    }
+    if (data.general_msg_type == 5){
+      updateGeneralNotificationDiv(data['notification'])
+    }
+    // Private notifications
+    // new 'chat' notifications data payload
+    if(data.private_msg_type == 10){
+      handleChatNotificationsData(data['notifications'], data['new_page_number'])
+    }
+    if(data.private_msg_type == 11){
+      setChatPaginationExhausted()
+    }
+    if(data.private_msg_type == 13 ){
+      handleNewChatNotificationsData(data['notifications'])
+    }
+    if(data.private_msg_type == 14){
+      setChatNotificationsCount(data['count'])
+    }
+   
+  };
+
+  notificationSocket.error = function (e) {
+    console.log("Notification socket closed unexpectedly.");
+  };
+
+  notificationSocket.onopen = function (e) {
+    console.log("Notification socket onopen.");
+    setupGeneralNotificationsMenu()
+    getFirstGeneralNotificationsPage()
+    getUnreadGeneralNotificationsCount()
+
+    setupChatNotificationsMenu()
+		getFirstChatNotificationsPage()
+  };
+
+  notificationSocket.onclose = function (e) {
+    console.log("Notification socket closed.");
+  };
+
+  if (notificationSocket.readyState == WebSocket.OPEN) {
+    console.log("Notification socket OPEN complete.");
+  } else if (notificationSocket.readyState == WebSocket.CONNECTING) {
+    console.log("Notification socket connecting...");
+  }
+</script>

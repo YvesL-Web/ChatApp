@@ -1,0 +1,188 @@
+{% load static %}
+<!-- Navbar-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid justify-content-between">
+    <!-- Left elements -->
+    <div class="d-flex align-items-center">
+      <!-- Brand -->
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img
+          src="{% static 'images/logo.png' %}"
+          class="rounded-circle"
+          width="60px"
+          alt="Logo"
+          loading="lazy"
+          style="margin-top: 2px" />
+      </a>
+
+      <!-- Search form -->
+      <form class="input-group w-auto my-auto d-none d-sm-flex" onsubmit="return executeQuery();">
+        <input
+          autocomplete="off"
+          type="search"
+          name="q"
+          id="search_account"
+          class="form-control rounded"
+          placeholder="Search"
+          style="min-width: 125px" 
+          />
+        <span class="input-group-text border-0 d-none d-lg-flex">
+          <i class="fas fa-search"></i>
+        </span>
+      </form>
+    </div>
+    <!-- end Left elements -->
+
+    <!-- Center elements -->
+    <ul class="navbar-nav align-items-center flex-row d-none d-md-flex">
+      <li class="nav-item me-3 me-lg-1 active">
+        <a class="nav-link" href="{% url 'home' %}">
+          <span><i class="fas fa-home fa-lg"></i></span>
+          <!--<span class="badge rounded-pill badge-notification bg-danger">1</span>-->
+        </a>
+      </li>
+
+      <!--<li class="nav-item me-3 me-lg-1">
+        <a class="nav-link" href="#">
+          <span><i class="fas fa-users fa-lg"></i></span>
+          <span class="badge rounded-pill badge-notification bg-danger">2</span>
+        </a>
+      </li>-->
+    </ul>
+    <!-- end Center elements -->
+
+    <!-- Right elements -->
+
+    <ul class="navbar-nav align-items-center flex-row">
+      {% if request.user.is_authenticated %}
+      <li class="nav-item me-3 me-lg-1">
+        <a class="nav-link d-sm-flex align-items-sm-center" href="#">
+          <img
+            src="{{user.profile_image.url}}"
+            class="rounded-circle"
+            height="50"
+            alt="Black and White Portrait of a Man"
+            loading="lazy" />
+          <strong class="d-none d-sm-block ms-1"
+            >{{user.username | title}}</strong
+          >
+        </a>
+      </li>
+
+      <li class="nav-item dropdown me-3 me-lg-1">
+        <a
+          class="nav-link dropdown-toggle hidden-arrow"
+          href="#"
+          id="navbarDropdownMenuLink"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false">
+          <i class="fas fa-comments fa-lg"></i>
+          <span class="badge rounded-pill badge-notification bg-danger" id="id_private_notifications_count"></span>
+        </a>
+        <ul
+          class="dropdown-menu dropdown-menu-end"
+          aria-labelledby="navbarDropdownMenuLink">
+          <li>
+            <a class="dropdown-item" href="{% url 'private-chat' %}">
+              Private Chat Room
+            <i class="fa-solid fa-people-arrows pe-2"></i>
+          </a>
+          </li>
+          <div id="id_private_notifications_container">
+            
+          </div>
+        </ul>
+      </li>
+
+      <li class="nav-item dropdown me-3 me-lg-1" onclick="setGeneralNotificationsAsRead()">
+        <a
+          class="nav-link dropdown-toggle hidden-arrow d-flex"
+          href="#"
+          id="navbarDropdownMenuLink"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false">
+          <i class="fas fa-bell fa-lg"></i>
+          <span class="badge rounded-pill badge-notification bg-danger" id="unread_notification_count"></span>
+        </a>
+        <ul
+          class="dropdown-menu dropdown-menu-end scrollable-menu"
+          id="id_general_notifications_container"
+          aria-labelledby="id_general_notifications_container">
+         
+        </ul>
+      </li>
+
+      <li class="nav-item dropdown me-3 me-lg-1">
+        <a
+          class="nav-link dropdown-toggle hidden-arrow"
+          href="#"
+          id="navbarDropdownMenuLink"
+          role="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false">
+          <i class="fas fa-chevron-circle-down fa-lg"></i>
+        </a>
+        <ul
+          class="dropdown-menu dropdown-menu-end"
+          aria-labelledby="navbarDropdownMenuLink">
+          <li>
+            <a class="dropdown-item" href="{% url 'profile' request.user.id  %}">
+              <i class="fa-solid fa-address-card"></i>
+              Profile
+            </a>
+          </li>
+
+          <li>
+            <a class="dropdown-item" href="#">
+              <i class="fa-solid fa-gear"></i>
+              Settings
+            </a>
+          </li>
+
+          <li>
+            <a class="dropdown-item" href="{% url 'logout' %}">
+              <i class="fa-solid fa-right-from-bracket"></i>
+              Logout
+            </a>
+          </li>
+        </ul>
+      </li>
+      {% else %}
+      <li class="nav-item me-3 me-lg-1">
+        <a class="nav-link" href="{% url 'login' %}" id="navbarDropdownMenuLink" role="button">
+          <i class="fa-solid fa-right-to-bracket"></i>
+          <span>Login</span>
+        </a>
+      </li>
+      <li class="nav-item me-3 me-lg-1">
+        <a
+          class="nav-link text-white btn btn-success rounded-pill shadow"
+          href="{% url 'register' %}"
+          id="navbarDropdownMenuLink"
+          role="button">
+          <span>Register</span>
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+
+    <!-- Right elements -->
+  </div>
+</nav>
+<!-- Navbar -->
+<script type="text/javascript" src="{% static 'js/preloadImage.js' %}"></script>
+{% include 'notification/scripts/general_notifications.html' %}
+{% include 'notification/scripts/private_notifications.html' %}
+{% include 'notification/scripts/notificationSocket.html' %}
+
+<script type="text/javascript">
+  function executeQuery() {
+    var query = document.getElementById("search_account").value;
+    window.location.replace("{% url 'search' %}?q=" + query);
+    return false;
+  }
+</script>
+
+

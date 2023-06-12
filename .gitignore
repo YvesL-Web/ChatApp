@@ -1,0 +1,5 @@
+/env
+/ChatApp/core/.env
+/ChatApp/media
+/ChatApp/static/images/logo.png
+/ChatApp/staticfiles

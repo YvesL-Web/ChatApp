@@ -1,0 +1,84 @@
+:root {
+  --main-background-color: #f2f2f2;
+  --dark-background-color: #a2a2a2;
+  --secondary-text-color: #808080;
+  --light-primary-text-color: #0080ff;
+}
+
+head {
+  font-family: "Segoe UI";
+  font-weight: 380;
+}
+
+body {
+  background-color: #f2f2f2;
+  font-family: "Segoe UI";
+  font-weight: 380;
+}
+
+.footer {
+  min-height: 100px;
+}
+
+.main {
+  min-height: 100vh;
+  height: 100%;
+}
+
+.image-container {
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  transition: opacity 0.5s;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.overlay button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: 0.1s ease !important;
+}
+
+.image-container:hover .overlay {
+  opacity: 1;
+}
+
+/* new test */
+/* .image-container {
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  transition: opacity 0.5s;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.overlay button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.image-container:hover .overlay {
+  opacity: 1;
+}
+
+#preview {
+  display: none;
+} */

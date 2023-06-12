@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="card p-2">
+    {% if friends %}
+    <div class="d-flex flex-row flex-wrap">
+      {% for friend in friends %}
+      <div class="card flex-row flex-grow-1 p-2 mx-2 my-2 align-items-center">
+        <a
+          class="profile-link"
+          href="{% url 'profile' friend.0.pk %}">
+          <div class="card-image m-2">
+            <img
+              class="rounded-circle"
+              style="height: 80px; width: 80px"
+              src="{{friend.0.profile_image.url}}"
+              alt="" />
+          </div>
+        </a>
+
+        <div class="card-center px-2">
+          <a
+            class="profile-link text-decoration-none"
+            href="{% url 'profile' friend.0.pk %}">
+            <h4 class="card-title">{{friend.0.username|truncatechars:50}}</h4>
+          </a>
+          {% if friend.1 %}
+
+          <a
+            href="#"
+            class="btn btn-primary text-decoration-none"
+            onclick="createOrReturnPrivateChat('{{friend.0.id}}')">
+            <i class="fa-regular fa-message pe-2"></i>
+            Send a Message
+          </a>
+
+          {% endif %}
+        </div>
+
+        <div
+          class="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
+          {% if friend.1 %}
+          <div class="d-flex flex-row friends-text-container p-3">
+            <p class="friends-text m-auto pe-2">Friend</p>
+            <span class="material-icons checkmark-icon m-auto pe-2">
+              <i class="fa-sharp fa-solid fa-circle-check"></i>
+            </span>
+          </div>
+          {% else %} 
+            {% if friend.0 != request.user %}
+            <div class="d-flex flex-row friends-text-container p-3">
+              <p class="friends-text m-auto me-1">Not Friend</p>
+              <span>
+                <i class="text-danger fa-solid fa-rectangle-xmark fs-4"></i>
+              </span>
+            </div>
+            {% endif %} 
+          {% endif %} 
+          
+          {% if friend.0 == request.user %}
+          <div class="d-flex flex-row friends-text-container p-3">
+            <p class="friends-text m-auto">This is you</p>
+            <span class="material-icons m-auto ps-2"
+              ><i class="fa-solid fa-user text-primary"></i>
+            </span>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% if forloop.counter|divisibleby:2 %}
+      {% endif %}
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="d-flex flex-row flex-wrap">
+      <!-- If no friends -->
+      <div
+        class="d-flex flex-row flex-grow-1 justify-content-center align-items-center p-4">
+        <p>No friends :(</p>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% include 'private_chat/scripts/create_or_return_private_chat.html' %}
+{% endblock content %}

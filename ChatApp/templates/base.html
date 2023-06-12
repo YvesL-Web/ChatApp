@@ -1,0 +1,94 @@
+
+{% load static %}
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--jquery-->
+    <script
+      src="https://code.jquery.com/jquery-3.6.3.min.js"
+      integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+      crossorigin="anonymous">
+    </script>
+    
+    <!--Custom css-->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/profile_update.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/search_result.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/friend_requests.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/chat_log.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/private_chat.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/notification.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/private_notifications.css' %}" />
+    
+    <!-- Markdown-it-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/13.0.1/markdown-it.min.js" 
+      integrity="sha512-SYfDUYPg5xspsG6OOpXU366G8SZsdHOhqk/icdrYJ2E/WKZxPxze7d2HD3AyXpT7U22PZ5y74xRpqZ6A2bJ+kQ==" 
+      crossorigin="anonymous" 
+      referrerpolicy="no-referrer">
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/python.min.js"
+      integrity="sha512-UsuvR/LRT1kQthy0F2+lc93U0HuKMQAcwcIVBqnGJOZCycza2xYO+0QAatJNl89B5IHl9HO3PexXG/1eR7W9JA=="
+      crossorigin="anonymous" 
+      referrerpolicy="no-referrer">
+    </script>
+    <script>hljs.highlightAll();</script>
+
+    <!--Boostrap-->
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+
+    <!--material icons-->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
+    <!-- Fontawesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    >
+    <!-- CropperJs-->
+    <link rel="stylesheet" href="{% static 'cropperjs-main/dist/cropper.min.css' %}">
+
+    <!-- Title -->
+    <title>JustTalk</title>
+  </head>
+  
+  <body>
+    {% include 'partials/_header.html' %}
+    <div class="container" id="id_loading_spinner" style="display:none;">
+      <div class="d-flex flex-row mx-auto flex-grow-1 justify-content-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+    </div>
+    <div class="main mt-3">
+      {% block content %} {% endblock content %}
+    </div>
+    
+    {% include 'partials/_footer.html' %}
+    
+    
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script type="module" src="{% static 'cropperjs-main/dist/cropper.min.js' %}"></script>
+
+    <script type="text/javascript">
+      function displayLoadingSpinner(isDisplayed){
+        var spinner = document.getElementById("id_loading_spinner")
+        if(isDisplayed){
+          spinner.style.display = "block"
+        }
+        else{
+          spinner.style.display = "none"
+        }
+      }
+    </script>
+  </body>
+</html>

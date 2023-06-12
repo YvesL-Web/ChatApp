@@ -1,0 +1,88 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<div class="container">
+  <div class="card p-2 rounded-pill bg-light">
+    {% if friend_requests %}
+    <div class="d-flex flex-row flex-wrap">
+      {% for request in friend_requests %}
+      <div
+        class="card flex-row flex-grow-1 p-2 mx-2 my-2 align-items-center rounded-pill border">
+        <a class="profile-link" href="{% url 'profile' request.sender.id %}">
+          <div class="card-image m-2">
+            <img
+              class="img-fluid profile-image rounded-circle"
+              src="{{request.sender.profile_image.url}}"
+              alt="" />
+          </div>
+        </a>
+        <a
+          class="profile-link text-decoration-none"
+          href="{% url 'profile' request.sender.id %}">
+          <div class="card-center px-2">
+            <h4 class="card-title">{{request.sender.username}}</h4>
+          </div>
+        </a>
+        <div
+          class="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
+          <button
+            id="id_decline_"
+            type="submit"
+            class="btn btn-danger rounded-pill me-2">
+            Decline
+          </button>
+          <button
+            id="id_confirm_"
+            type="submit"
+            class="btn btn-primary btn-outline-success rounded-pill text-white">
+            Accept
+          </button>
+          <input type="text" id="text" value="{{request.id}}" hidden />
+        </div>
+      </div>
+
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="d-flex flex-row flex-wrap">
+      <!-- If no friends -->
+      <div
+        class="d-flex flex-row flex-grow-1 justify-content-center align-items-center p-4">
+        <p>No Friends request</p>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<script type="text/javascript">
+  function onFriendRequestAccepted() {
+    location.reload();
+  }
+
+  function onFriendRequestDeclined() {
+    location.reload();
+  }
+
+  var acceptFriendRequestBtn = document.getElementById("id_confirm_");
+  var value = document.getElementById("text").value;
+  if (acceptFriendRequestBtn != null) {
+    acceptFriendRequestBtn.addEventListener("click", function () {
+      acceptFriendRequest(value, onFriendRequestAccepted);
+    });
+  }
+
+  var declineFriendRequestBtn = document.getElementById("id_decline_");
+  if (declineFriendRequestBtn != null) {
+    declineFriendRequestBtn.addEventListener("click", function () {
+      declineFriendRequest(value, onFriendRequestDeclined);
+    });
+  }
+
+  //function triggerDeclineFriendRequest(request_id) {
+  //declineFriendRequest(request_id, onFriendRequestDeclined);
+  //}
+</script>
+
+{% include 'friend/scripts/accept_friend_request.html' %} 
+{% include 'friend/scripts/decline_friend_request.html' %}
+{% endblock content %}
